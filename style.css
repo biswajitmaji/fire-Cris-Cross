@@ -1,0 +1,92 @@
+h3 {
+    margin-top: 0px;
+}
+table {
+    border: 5px solid #000;
+}
+td {
+    border-top: 1px solid #555;
+    border-right: 1px solid #555;
+    padding: 0px;
+}
+td img {
+    border: none;
+    height: 100%;
+    width:100%;
+    max-width: 116px;
+}
+#game-on, #select_image_div {
+    margin: 10px auto;
+    overflow: hidden;
+    width: 100%;
+}
+#game-on div {
+    text-align: center;
+}
+#display-imgs img {
+    height: auto;
+    max-height: 260px;
+    max-width: 260px;
+    width: 45%;
+}
+#start-button {
+    color: #080;
+    font-size: 20px;
+    font-weight: bold;
+    width: 140px;
+}
+#ch-img-button {
+    color: #f55;
+    font-size: 15px;
+    font-weight: bold;
+    width: 140px;
+    margin-top: 5px;
+}
+#select_image_div h2, #select_image_div div {
+    text-align: center;
+}
+.pull-left {
+    float: left;
+}
+.change-game {
+    margin: 0px;
+}
+.change-game div h5 {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+#show-current-level {
+    font-size: 20px;
+    color: #161;
+    text-transform: uppercase;
+}
+#opMsg {
+    position: relative;
+    z-index: 2;
+}
+#opMsg img{
+    width: 260px;
+    height: 90px;
+}
+#gameTable {
+    position: relative;
+    margin: 0 5%;
+}
+#timer {
+    font-size: 25px;
+}
+.ref-img {
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-left: 2px;
+    border: 1px solid #555;
+}
+
+@media (min-width: 710px) {
+    body {
+        text-align: center;
+    }
+    #game-on {
+        width: 700px;
+    }
+}

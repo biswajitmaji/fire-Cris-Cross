@@ -1,0 +1,14 @@
+{
+  "name": "cris-cross",
+  "description": 'Who can make a row of "x' or "0" will win.',
+  "launch_path": "/cris-cross.html",
+  "icons": {
+    "512": "/img/icon-512.png",
+    "128": "/img/icon-128.png"
+  },
+  "developer": {
+    "name": "Biswajit Maji",
+    "url": ""
+  },
+  "default_locale": "en"
+}
