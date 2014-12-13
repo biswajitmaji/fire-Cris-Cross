@@ -4,7 +4,7 @@ var userDice = 'cross', compDice = 'zero';
 var checkEachSequence = function(eachSeqArr, DiceType) {
     // if both in sequencearr has same with DiceType, then return true
     // else false;
-    if ($("#"+eachSeqArr[0]).hasClass(DiceType) && ($("#"+eachSeqArr[1]).hasClass(DiceType))) {
+    if ($("#" + eachSeqArr[0]).hasClass(DiceType) && ($("#" + eachSeqArr[1]).hasClass(DiceType))) {
         return true;
     }
     return false;
@@ -12,24 +12,32 @@ var checkEachSequence = function(eachSeqArr, DiceType) {
 var checkAllSequence = function(curXYPos, DiceType) {
     var posXYArr = curXYPos.split('-');
     // x axis wise loop to get other 2 td to create sequence
-    var eachSequenceArr=[], eachSequenceIndex = 0;
-    for (i=1; i<=3;i++) {
-        if (curXYPos == (posXYArr[0]+'-'+i)) { continue; }
-        
-        eachSequenceArr[eachSequenceIndex++] = posXYArr[0]+'-'+i;
+    var eachSequenceArr = [], eachSequenceIndex = 0;
+    for (i = 1; i <= 3; i++) {
+        if (curXYPos == (posXYArr[0] + '-' + i)) {
+            continue;
+        }
+
+        eachSequenceArr[eachSequenceIndex++] = posXYArr[0] + '-' + i;
     }
     // call to check each sequence
-    if(checkEachSequence(eachSequenceArr, DiceType)) { return true; }
-    
+    if (checkEachSequence(eachSequenceArr, DiceType)) {
+        return true;
+    }
+
     eachSequenceIndex = 0;
-    for (i=1; i<=3;i++) {
-        if (curXYPos == (i+'-'+posXYArr[1])) { continue; }
-        
-        eachSequenceArr[eachSequenceIndex++] = i+'-'+posXYArr[1];
+    for (i = 1; i <= 3; i++) {
+        if (curXYPos == (i + '-' + posXYArr[1])) {
+            continue;
+        }
+
+        eachSequenceArr[eachSequenceIndex++] = i + '-' + posXYArr[1];
     }
     // call to check each sequence : if true -> return true
-    if(checkEachSequence(eachSequenceArr, DiceType)) { return true; }
-    
+    if (checkEachSequence(eachSequenceArr, DiceType)) {
+        return true;
+    }
+
     // add checking for corner positions
     switch (curXYPos) {
         case '1-1':
@@ -46,70 +54,83 @@ var checkAllSequence = function(curXYPos, DiceType) {
             break;
     }
     // call to check each sequence
-    if(checkEachSequence(eachSequenceArr, DiceType)) { return true; }
+    if (checkEachSequence(eachSequenceArr, DiceType)) {
+        return true;
+    }
 
     //for special position 2-2
     if ('2-2' == curXYPos) {
         eachSequenceArr = ["3-1", "1-3"];
         // call to check each sequence
-        if(checkEachSequence(eachSequenceArr, DiceType)) { return true; }
-        
+        if (checkEachSequence(eachSequenceArr, DiceType)) {
+            return true;
+        }
+
         eachSequenceArr = ["1-1", "3-3"];
         // call to check each sequence
-        if(checkEachSequence(eachSequenceArr, DiceType)) { return true; }
+        if (checkEachSequence(eachSequenceArr, DiceType)) {
+            return true;
+        }
     }
-    
+
     return false;
 };
 
 /*************  ************/
 
 var compRunningZero = function() {
-    
     // determine first placement.
     if (0 == $("td.zero").length) {
-        if ($("#2-2").hasClass( "cross" )) {
+        if ($("#2-2").hasClass("cross")) {
             $("#1-1").removeClass("blank").addClass("zero");
         } else {
             $("#2-2").removeClass("blank").addClass("zero");
         }
     } else { // 2nd turn onwards
         var RuleFound = 0;
-        
+
         // attacking rule - loop through blanks and check if comp can win
         $('#gameTable tr td.blank').each(function() {
-            if(checkAllSequence(this.id, 'zero')) {
-                $("#"+this.id).removeClass("blank").addClass("zero");
+            if (checkAllSequence(this.id, 'zero')) {
+                $("#" + this.id).removeClass("blank").addClass("zero");
                 alert('Comp win');
                 RuleFound = 1;
                 return false;
             }
-            
-        }); 
-                
+
+        });
+
         // defending rule - loop through blanks and defend if user win possible
         if (0 == RuleFound) {
             $('#gameTable tr td.blank').each(function() {
-                if(checkAllSequence(this.id, 'cross')) {
-                    $("#"+this.id).removeClass("blank").addClass("zero");
+                if (checkAllSequence(this.id, 'cross')) {
+                    $("#" + this.id).removeClass("blank").addClass("zero");
                     RuleFound = 1;
                     return false;
                 }
-                
-            });  
+
+            });
         }
-        
+
         // exceptional logic if above 2 dont work
         if (0 == RuleFound) {
-            
+            if($("#2-2").hasClass('zero')) { // zero in center
+                // if cross is in opposite corner, put 0 in any middle box
+
+                // if
+
+            }
         }
-        
+
         // if nothing found till now, populate randomly
         if (0 == RuleFound) {
-            
+            $('#gameTable tr td.blank').each(function() {
+                $("#" + this.id).removeClass("blank").addClass("zero");
+                return false;
+            });
         }
     }
-    
+
 };
 
 
@@ -180,12 +201,12 @@ var bindGame = function() {
 
 $(document).ready(function() {
     $('#gameTable tr td.blank').on('click', function() {
-        $("#"+this.id).removeClass("blank").addClass("cross");
+        $("#" + this.id).removeClass("blank").addClass("cross");
         compRunningZero();
     });
-    
-    
-    
+
+
+
     //$("#btn-easy").hide();
     //$("#show-current-level").html(gameLevel);
     //setNoOfBoxes();
