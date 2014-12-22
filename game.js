@@ -97,7 +97,6 @@ var compRunningZero = function() {
                 RuleFound = 1;
                 return false;
             }
-
         });
 
         // defending rule - loop through blanks and defend if user win possible
@@ -108,17 +107,59 @@ var compRunningZero = function() {
                     RuleFound = 1;
                     return false;
                 }
-
             });
         }
 
         // exceptional logic if above 2 dont work
         if (0 == RuleFound) {
             if($("#2-2").hasClass('zero')) { // zero in center
+                // if corner and opposite is the position (determine this case)
+                var Middle4Pos = new Object({"1-2":["3-1","3-3"], "2-1":["1-3","3-3"], "2-3":["1-1","3-1"], "3-2":["1-1","1-3"]}),
+                        excludeList = [];
+                $.each(Middle4Pos, function(key, val) {
+                    if($("#"+key).hasClass('cross')) {
+                        // find if any of opposite corner has values
+                        $.each(val, function(i, eachCornerVal) {
+                            if($("#"+eachCornerVal).hasClass('cross')) { // "2.5" combination found
+                                var middlePosXYArr = key.split('-');
+                                if(2 == middlePosXYArr[0]) {
+                                    // if row of middle position is 2, dont touch the whole col of corner pos
+                                    var cornerCol = eachCornerVal.split('-')[1];
+                                    excludeList.push("1-"+cornerCol, "2-"+cornerCol, "3-"+cornerCol);
+                                } else {
+                                    // if col of middle position is 2, dont touch the whole row of corner pos
+                                    var cornerRow = eachCornerVal.split('-')[0];
+                                    excludeList.push(cornerRow+"-1", cornerRow+"-2", cornerRow+"-3");
+                                }
+                            }
+                        });
+                    }
+                });
+                // put zero excluding exclude list
+                $('#gameTable tr td.blank').each(function() {
+                    if (-1 === $.inArray(this.id, excludeList)) {
+                        $("#" + this.id).removeClass("blank").addClass("zero");
+                        RuleFound = 1;
+                        return false;
+                    }
+                });
+
                 // if cross is in opposite corner, put 0 in any middle box
-
-                // if
-
+                excludeList = [];
+                if (0 == RuleFound) {
+                    if($("#1-1").hasClass('cross') && $("#3-3").hasClass('cross')) {
+                        excludeList.push("1-3", "3-1");
+                    } else if($("#1-3").hasClass('cross') && $("#3-1").hasClass('cross')) {
+                        excludeList.push("1-1", "3-3");
+                    }
+                    $('#gameTable tr td.blank').each(function() {
+                        if (-1 === $.inArray(this.id, excludeList)) {
+                            $("#" + this.id).removeClass("blank").addClass("zero");
+                            RuleFound = 1;
+                            return false;
+                        }
+                    });
+                }
             }
         }
 
@@ -148,83 +189,27 @@ var compRunningZero = function() {
 
 
 var checkComplition = function() { //check all image position if any sequence completed
-    //var currentSeries = '';
-    //$('#gameTable tr td').each(function() {
-    //    currentSeries += $(this).find("img").attr('id') + '-';
-    //});
-    //
-    //if (currentSeries == correctImageSeries) {
-    //    $("#td_" + noOfBoxes).html('<img id="img_' + noOfBoxes + '" src="media/' + imgDirName + '/' + noOfBoxes + '/img' + noOfBoxes + '.jpeg" />');
-    //    $("#" + getBlankTdId()).removeClass('blank');
-    //    setGameImageStyle();
-    //    stopTimer();
-    //    $("#opMsg").show();
-    //}
+
 }
 var bindGame = function() {
-    //$("td").click(function(data) {
-    //    var currentTdId = $(data.currentTarget).attr('id');
-    //    var blankTdId = getBlankTdId();
-    //
-    //    if (-1 < $.inArray(blankTdId, eval("assoc_" + currentTdId))) {
-    //        // move image
-    //        $("#" + blankTdId).html($("#" + currentTdId).html());
-    //        $("#" + currentTdId).html('');
-    //        $("#" + blankTdId).removeClass('blank');
-    //        $("#" + currentTdId).addClass('blank');
-    //        checkComplition();
-    //    }
-    //});
-    //startTimer();
+
 };
 
 
 
 
 
-//var changeLevel = function(level, elem) {
-//    if (confirm("Are you sure? You will loose all the current progress.")) {
-//        resetTimer();
-//        $(".change-game button").show();
-//        $(elem).hide();
-//
-//        $("#opMsg").hide();
-//        gameLevel = level;
-//        $("#show-current-level").html(gameLevel);
-//        setNoOfBoxes();
-//        createAssocTdList();
-//        arrange();
-//        setGameImageStyle();
-//        $("#start-button").show();
-//    }
-//}
+
 
 $(document).ready(function() {
     $('#gameTable tr td.blank').on('click', function() {
         $("#" + this.id).removeClass("blank").addClass("cross");
+
+        if (checkAllSequence(this.id, 'cross')) {
+            alert('You win');
+            return false;
+        }
+
         compRunningZero();
     });
-
-
-
-    //$("#btn-easy").hide();
-    //$("#show-current-level").html(gameLevel);
-    //setNoOfBoxes();
-    //createAssocTdList();
-    //
-    //$("#ch-img-button").click(function() {
-    //    changeImage();
-    //});
-    //$("#btn-easy").click(function(event) {
-    //    changeLevel('easy', event.target);
-    //});
-    //$("#btn-moderate").click(function(event) {
-    //    changeLevel('moderate', event.target);
-    //});
-    //$("#start-button").click(function() {
-    //    randomize();
-    //});
-    //$("#display-imgs img").click(function(event) {
-    //    selectImage(event.target.id);
-    //});
 });
