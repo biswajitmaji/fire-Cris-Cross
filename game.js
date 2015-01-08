@@ -177,16 +177,73 @@ var compRunningX = function() {
     // determine first placement.
     if (0 == $("td.cross").length) {
         // place cross in random place among 4 corners and middle
-        // get x axis from 1,2,3
-        var y, x = Math.floor(3 * Math.random()) % 3 + 1;
-        if (2 == x) {
-            y = 2;
-        } else {
-            var myArray = [1, 3];
-            y = myArray[Math.floor(Math.random() * myArray.length)];
+        var firstCrossAttackingPlacess = ['1-1', '1-3', '2-2', '3-1', '3-3'];
+        var firstAttackingPos = firstCrossAttackingPlacess[Math.floor(Math.random() * firstCrossAttackingPlacess.length)];
+
+        $("#"+firstAttackingPos).removeClass("blank").addClass("cross");
+    } else if(1 == $("td.cross").length) { // 2nd chance
+        // middle position is blank, select position, so that 3rd entry will be check mate
+        if($("#2-2").hasClass('blank')) {
+            var zeroId = $('#gameTable tr td.zero').attr('id');
+            var crossId = $('#gameTable tr td.cross').attr('id');
+            if(('1-1' == zeroId) || ('1-3' == zeroId) || ('3-1' == zeroId) || ('3-3' == zeroId)) { // if 0 is in corner
+                switch(crossId) {
+                    case '1-1':
+                        if('3-3' == zeroId) {
+                            $("#3-1").removeClass("blank").addClass("cross");
+                        } else {
+                            $("#3-3").removeClass("blank").addClass("cross");
+                        }
+                        break;
+                    case '1-3':
+                        if('3-1' == zeroId) {
+                            $("#3-3").removeClass("blank").addClass("cross");
+                        } else {
+                            $("#3-1").removeClass("blank").addClass("cross");
+                        }
+                        break;
+                    case '3-1':
+                        if('1-3' == zeroId) {
+                            $("#1-1").removeClass("blank").addClass("cross");
+                        } else {
+                            $("#1-3").removeClass("blank").addClass("cross");
+                        }
+                        break;
+                    case '3-3':
+                        if('1-1' == zeroId) {
+                            $("#3-1").removeClass("blank").addClass("cross");
+                        } else {
+                            $("#1-1").removeClass("blank").addClass("cross");
+                        }
+                        break;
+                }
+            } else { // if 0 is in middle
+//                // place either opposite corner or 2.5 box
+//                var targetableBoxes = ['1-1', '1-2', '2-1'];
+//                switch(crossId) {
+//                    case '1-1':
+//                        targetableBoxes = ['2-3', '3-2', '3-3'];
+//                        break;
+//                    case '1-3':
+//                        targetableBoxes = ['2-1', '3-1', '3-2'];
+//                        break;
+//                    case '3-1':
+//                        targetableBoxes = ['1-2', '1-3', '2-3'];
+//                        break;
+//                }
+//                // loop through arr and take anyone which is blank
+//                $(targetableBoxes).each(function() {
+//                    if($("#"+this).hasClass('blank')) {
+//                        $("#"+this).removeClass("blank").addClass("cross");
+//                        return false;
+//                    }
+//                });
+            }
+        } else { // if 0 in middle
+
+
         }
-        $("#"+x+"-"+y).removeClass("blank").addClass("cross");
-    } else { // 2nd turn onwards
+    } else { // 3rd turn onwards
         var RuleFound = 0;
 
         // attacking rule - loop through blanks and check if comp can win
